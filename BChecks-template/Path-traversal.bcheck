@@ -1,0 +1,29 @@
+metadata:
+    language: v2-beta
+    name: "Path-traversal"
+    description: "Tests for exposed git directory"
+    author: "CHH"
+
+run for each:
+    # you could add more values to this list to make the check repeat
+    potential_path =
+        "../etc/passwd",
+        "../../etc/passwd",
+        "../../../etc/passwd",
+        "../../../../etc/passwd",
+        "../../../../../etc/passwd",
+        "../../../../../../etc/passwd",
+        "../../../../../../../etc/passwd"
+
+given host then
+    send request called check:
+        method: "GET"
+        replacing path: `/image.jsp?file={potential_path}`
+
+    if "root" in {check.response.body} then
+        report issue:
+            severity: info
+            confidence: certain
+            detail: `Found at {potential_path}.`
+            remediation: "Avoid using user-supplied input to construct file or directory paths. If possible, use predefined or randomly generated values instead of user input.."
+    end if

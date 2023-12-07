@@ -1,0 +1,27 @@
+metadata:
+    language: v2-beta
+    name: "SQLi"
+    description: "Inserts a calculation into each parameter to detect suspicious input transformation"
+    author: "CHH"
+
+define:
+    payload_1="'"
+    answer="Warning"
+            
+
+# we will automatically insert into nested insertion points
+given insertion point then
+
+    # prevent false positives by checking answer isn't
+    # already in base response
+    if not({answer} in {base.response}) then
+        send payload:
+            appending: {payload_1}
+        if {answer} in {latest.response} then
+            report issue:
+                severity: high
+                confidence: tentative
+                detail: "The application transforms input in a way that suggests it might be vulnerable to some kind of SQL injection."
+                remediation: "Input validation and parametrized queries including prepared statements.."
+        end if
+    end if

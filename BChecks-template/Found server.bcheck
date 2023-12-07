@@ -1,0 +1,15 @@
+metadata:
+    language: v2-beta
+    name: "Found server"
+    description: "Check Server name "
+    author: "CHH"
+    tags: "Recon"
+
+given response then
+    if {latest.response} matches "Server" then
+        report issue:
+            severity: info
+            confidence: firm
+            detail: "Found server."
+            remediation: "Ensure sensitive informations are not exposed."
+    end if

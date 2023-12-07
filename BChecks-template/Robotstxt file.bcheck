@@ -1,0 +1,23 @@
+metadata:
+    language: v2-beta
+    name: "Robots.txt file"
+    description: "Check for the presence of robots.txt  "
+    author: "CHH"
+    tags: "Recon"
+
+define:
+    # you could add more values to this list to make the check repeat
+    robots_path = "/robots.txt"
+
+given host then
+    send request called check:
+        method: "GET"
+        path: {robots_path}
+
+    if "200" in {check.response.status_code} then
+        report issue:
+            severity: info
+            confidence: certain
+            detail: `robots.txt found at {robots_path}.`
+            remediation: "Ensure sensitive paths are not exposed."
+    end if
