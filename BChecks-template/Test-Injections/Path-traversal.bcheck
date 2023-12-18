@@ -1,7 +1,7 @@
 metadata:
     language: v2-beta
     name: "Path-traversal"
-    description: "Tests for exposed git directory"
+    description: "Tests for directory travetsal"
     author: "CHH"
 
 run for each:
